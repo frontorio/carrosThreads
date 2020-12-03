@@ -13,6 +13,7 @@ public class CarroThread extends Thread {
 		Random numRandom = new Random();
 		String and = "";
 		int limite = 5;
+		boolean pit = false;
 		//O carro anda um numero aleatória, entre 0 e 4, até chegar em 25
 		while (progresso < 25) {
 			
@@ -37,11 +38,28 @@ public class CarroThread extends Thread {
 			Thread.currentThread();
 			Thread.yield(); 
 			
+			System.out.println("[CORRIDA]O "+nomeCarro+" (andou "+novoPasso+" passos): "+and+linha+"|");
 			
-			System.out.println(nomeCarro+" (andou "+novoPasso+" passos): "+and+linha+"|");
+			if (progresso > 10 & pit == false) {
+				try {
+					//System.out.println("O "+nomeCarro+" está entrando para o pit stop.");
+					pit = pitStop(nomeCarro);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		
-		System.out.println(nomeCarro+" finalizou a corrida");
+		System.out.println(">>>[LINHA DE CHEGADA]"+nomeCarro+" finalizou a corrida.");
+	}
+	public static synchronized boolean pitStop(String nome) throws InterruptedException {
+		System.out.println(">>>[PIT STOP]O "+nome+"  está entrando para o pit stop.");
+		Random numRandom = new Random();
+		float tempPit = numRandom.nextFloat();
+		Thread.sleep((long)tempPit);
+		System.out.println(">>>[PIT STOP]O "+nome+" ficou "+tempPit+"s no pit stop.");
+		return true;
 	}
     
 }
